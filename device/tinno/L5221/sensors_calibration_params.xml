@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sensors>
+  <sensor name="bma2x2-accel" state="static" offset_x="0" offset_y="0" offset_z="0"/>
+</sensors>

@@ -1,0 +1,19 @@
+# access to perflock
+allow untrusted_app mpctl_socket:dir r_dir_perms;
+unix_socket_send(untrusted_app, mpctl, perfd)
+unix_socket_connect(untrusted_app, mpctl, perfd)
+unix_socket_send(untrusted_app, mpctl, mpdecision)
+unix_socket_connect(untrusted_app, mpctl, mpdecision)
+
+#Address denial logs for untrusted_app accessing oma drm files
+allow untrusted_app oma_drm_data_file:dir w_dir_perms;
+allow untrusted_app oma_drm_data_file:file create_file_perms;
+
+# using binder call
+userdebug_or_eng(`
+  binder_call(untrusted_app, hbtp);
+  binder_call(untrusted_app, imscm);
+')
+
+# diag device node access is restricted to untrusted_app
+neverallow untrusted_app diag_device:chr_file rw_file_perms;

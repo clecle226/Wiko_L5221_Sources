@@ -1,0 +1,21 @@
+# Talks to qmuxd via the qmux_radio socket.
+qmux_socket(radio);
+allow radio ims_socket:sock_file write;
+
+#Need permission to execute com.qualcomm.qti.telephony/app_dex/xx
+allow radio radio_data_file:file execute;
+allow radio shell_data_file:dir search;
+
+#Need permission to execute dpmd talk to radio layer
+unix_socket_connect(radio, dpmd, dpmd)
+
+# IMS needs permission to use unix domain socket
+allow radio ims:unix_stream_socket connectto;
+
+# allow radio to access video_device, smd_device for VideoCall
+allow radio video_device:dir r_dir_perms;
+allow radio video_device:chr_file rw_file_perms;
+allow radio smd_device:chr_file rw_file_perms;
+
+# Tinno:CJ for nv sync
+allow radio tinno_prop:property_service set;

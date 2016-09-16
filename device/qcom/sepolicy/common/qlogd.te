@@ -1,0 +1,42 @@
+# qlogd
+type qlogd, domain;
+type qlogd_exec, exec_type, file_type;
+
+# make transition from init to its domain
+init_daemon_domain(qlogd)
+
+# need to access sharemem log device for smem logs
+allow qlogd smem_log_device:chr_file { open read write ioctl };
+
+# need to add more capabilities for qlogd
+allow qlogd self:capability { setuid setgid dac_override dac_read_search sys_admin };
+allow qlogd self:capability2 syslog;
+
+# need to access system_data partitions for configration files
+allow qlogd system_data_file:dir { write add_name };
+allow qlogd system_data_file:file { open read write create };
+allow qlogd system_file:file execute_no_trans;
+
+# need to create and listen socket
+allow qlogd socket_device:sock_file { create setattr };
+allow qlogd qlogd_socket:sock_file { create read write setattr };
+
+# need to start shell execute files
+allow qlogd shell_exec:file { execute read open execute_no_trans };
+
+# need to create and write files in fuse partition
+allow qlogd fuse:dir create_dir_perms;
+allow qlogd fuse:file create_file_perms;
+
+#need to capture kmsg
+allow qlogd kernel:system syslog_mod;
+
+# need for capture adb logs
+allow qlogd logdr_socket:sock_file write;
+allow qlogd logd:unix_stream_socket connectto;
+
+#Tinno:CJ
+allow qlogd sysfs_wake_lock:file {append open};
+allow qlogd self:capability2 block_suspend;
+allow qlogd self:capability kill;
+allow qlogd devpts:chr_file { read write getattr ioctl};

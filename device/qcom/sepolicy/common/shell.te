@@ -1,0 +1,13 @@
+#Tinno:CJ for debug
+allow shell radio_prop:property_service set;
+allow shell system_prop:property_service set;
+allow shell tinno_prop:property_service set;
+allow shell ctl_default_prop:property_service set;
+allow shell tombstone_data_file:dir r_dir_perms;
+allow shell tombstone_data_file:file r_file_perms;
+allow shell system_data_file:dir r_dir_perms;
+allow shell system_data_file:file r_file_perms;
+allow shell cache_file:dir r_dir_perms;
+allow shell cache_file:file r_file_perms;
+
+allow shell shell_prop:property_service set;

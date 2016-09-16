@@ -1,0 +1,64 @@
+# File types must be defined for file_contexts.
+type tinno_su_exec, exec_type, file_type;
+
+
+  # Domain used for su processes, as well as for adbd and adb shell
+  # after performing an adb root command.  The domain definition is
+  # wrapped to ensure that it does not exist at all on -user builds.
+  type tinno_su, domain;
+  domain_auto_trans(shell, tinno_su_exec, tinno_su)
+
+  # Allow dumpstate to call su on userdebug / eng builds to collect
+  # additional information.
+  domain_auto_trans(dumpstate, tinno_su_exec, tinno_su)
+
+  # su is also permissive to permit setenforce.
+  permissive tinno_su;
+
+  # Add su to various domains
+  net_domain(tinno_su)
+  app_domain(tinno_su)
+
+  dontaudit tinno_su self:capability_class_set *;
+  dontaudit tinno_su kernel:security *;
+  dontaudit tinno_su kernel:system *;
+  dontaudit tinno_su self:memprotect *;
+  dontaudit tinno_su domain:process *;
+  dontaudit tinno_su domain:fd *;
+  dontaudit tinno_su domain:dir *;
+  dontaudit tinno_su domain:lnk_file *;
+  dontaudit tinno_su domain:{ fifo_file file } *;
+  dontaudit tinno_su domain:socket_class_set *;
+  dontaudit tinno_su domain:ipc_class_set *;
+  dontaudit tinno_su domain:key *;
+  dontaudit tinno_su fs_type:filesystem *;
+  dontaudit tinno_su {fs_type dev_type file_type}:dir_file_class_set *;
+  dontaudit tinno_su node_type:node *;
+  dontaudit tinno_su node_type:{ tcp_socket udp_socket rawip_socket } *;
+  dontaudit tinno_su netif_type:netif *;
+  dontaudit tinno_su port_type:socket_class_set *;
+  dontaudit tinno_su port_type:{ tcp_socket dccp_socket } *;
+  dontaudit tinno_su domain:peer *;
+  dontaudit tinno_su domain:binder *;
+  dontaudit tinno_su property_type:property_service *;
+
+
+
+# Same as adbd rules above, except allow su to do the same thing
+  allow domain tinno_su:unix_stream_socket connectto;
+  allow domain tinno_su:fd use;
+  allow domain tinno_su:unix_stream_socket { getattr getopt read write shutdown };
+
+  binder_call(domain, tinno_su)
+
+  # Running something like "pm dump com.android.bluetooth" requires
+  # fifo writes
+  allow domain tinno_su:fifo_file { write getattr };
+
+  # allow "gdbserver --attach" to work for su.
+  allow domain tinno_su:process sigchld;
+
+
+  allow adbd self:process setcurrent;
+
+ allow adbd tinno_su:process dyntransition;

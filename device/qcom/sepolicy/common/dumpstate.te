@@ -1,0 +1,3 @@
+allow dumpstate fuse:dir { write search add_name };
+allow dumpstate fuse:file { write create open getattr };
+allow dumpstate zygote:process signal;

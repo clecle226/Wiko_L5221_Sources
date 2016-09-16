@@ -1,0 +1,15 @@
+wc_transport.              u:object_r:bluetooth_prop:s0
+sys.usb_uicc.              u:object_r:uicc_prop:s0
+sys.ims.                   u:object_r:qcom_ims_prop:s0
+hw.fm.                     u:object_r:fm_prop:s0
+sys.audio.init             u:object_r:audio_prop:s0
+persist.sys.shflag         u:object_r:backup_prop:s0
+persist.usb.chgdisabled    u:object_r:chgdiabled_prop:s0
+camera.                    u:object_r:camera_prop:s0
+persist.camera.            u:object_r:camera_prop:s0
+persist.power.             u:object_r:power_prop:s0
+#Tinno:CJ
+persist.tinno.             u:object_r:tinno_prop:s0
+tinno.                     u:object_r:tinno_prop:s0
+
+operator.data.             u:object_r:operator_data_prop:s0

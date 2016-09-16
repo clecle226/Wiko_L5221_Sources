@@ -1,0 +1,13 @@
+type subsystem_ramdump, domain;
+type subsystem_ramdump_exec, exec_type, file_type;
+init_daemon_domain(subsystem_ramdump);
+
+allow subsystem_ramdump ramdump_device:chr_file r_file_perms;
+allow subsystem_ramdump sysfs:file w_file_perms;
+
+allow subsystem_ramdump device:dir { read open };
+allow subsystem_ramdump system_data_file:dir { write create add_name };
+allow subsystem_ramdump system_data_file:file { write create open };
+allow subsystem_ramdump fuse:dir { write search create add_name };
+allow subsystem_ramdump fuse:file { write create open };
+allow subsystem_ramdump self:capability { dac_read_search dac_override };

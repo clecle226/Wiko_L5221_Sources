@@ -1,0 +1,18 @@
+recovery_only(`
+    # Read files on /sdcard
+    allow recovery sdcard_type:dir r_dir_perms;
+    allow recovery sdcard_type:file r_file_perms;
+    allow recovery vfat:dir r_dir_perms;
+    allow recovery vfat:file r_file_perms;
+    allow recovery system_data_file:file r_file_perms;
+    allow recovery system_data_file:dir r_dir_perms;
+    allow recovery rfs_system_file:{file lnk_file } { create_file_perms relabelfrom relabelto };
+    allow recovery rfs_system_file:dir { create_dir_perms relabelfrom relabelto };
+    #Tinno:CJ for ota open data/data/app/xxxx
+    allow recovery system_app_data_file:dir  { open read getattr search};
+    allow recovery system_app_data_file:file { open read getattr };
+    # Tinno:wlj add for cache/recovery/commond
+    allow recovery mmi_data_file:dir { open read getattr search };
+    allow recovery mmi_data_file:file { open read getattr  };
+
+')

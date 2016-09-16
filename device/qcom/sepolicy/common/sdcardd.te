@@ -1,0 +1,3 @@
+# allow sdcardd to call am command
+domain_auto_trans(sdcardd, shell_exec, shell);
+allow shell sdcardd:fd use;

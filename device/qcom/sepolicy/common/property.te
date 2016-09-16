@@ -1,0 +1,12 @@
+# property for uicc_daemon
+type uicc_prop, property_type;
+type qcom_ims_prop, property_type;
+type fm_prop, property_type;
+type backup_prop, property_type;
+type chgdiabled_prop, property_type;
+type camera_prop, property_type;
+type power_prop, property_type;
+#Tinno:CJ
+type tinno_prop, property_type;
+
+type operator_data_prop, property_type;

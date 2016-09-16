@@ -1,0 +1,34 @@
+#Policy file for qcom-system-daemon
+#qcomsysd = qcom-system-daemon domain
+type qcomsysd, domain;
+type qcomsysd_exec, exec_type, file_type;
+init_daemon_domain(qcomsysd);
+
+#Needed for logging
+allow qcomsysd smem_log_device:chr_file { open read write ioctl };
+
+#Needed for handling diag commands
+allow qcomsysd diag_device:chr_file { open read write ioctl };
+
+#Needed to read/write cookies to the misc partition
+allow qcomsysd block_device:dir { search };
+allow qcomsysd misc_partition:blk_file { open read getattr write };
+
+#Needed to access the bootselect partition
+allow qcomsysd bootselect_device:blk_file { open read getattr write };
+
+#Needed to get image info from socinfo
+allow qcomsysd sysfs_socinfo:dir  { open search read };
+allow qcomsysd sysfs_socinfo:file { open read write };
+
+allow qcomsysd self:capability { dac_override fsetid sys_boot };
+#need to access config file in data partition
+allow qcomsysd modem_config_file:file rw_file_perms;
+
+#need to write this node for reset
+allow qcomsysd proc_sysrq:file rw_file_perms;
+
+#need to do qmi communication
+qmux_socket(qcomsysd)
+allow qcomsysd self:capability { dac_read_search dac_override };
+allow qcomsysd self:socket { read write create ioctl };

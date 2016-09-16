@@ -1,0 +1,43 @@
+#for accessing fmradio device node
+allow  init_shell  fm_radio_device:chr_file { open read ioctl };
+# for insmod of iris ko  , this is needed .
+allow init_shell self:capability sys_module;
+
+
+#for  property starting with hw
+allow init_shell  system_prop:property_service set ;
+
+#for access to set BT property
+allow init_shell  bluetooth_prop:property_service set;
+
+#most of the default properties are set by init_shell
+allow init_shell  default_prop:property_service set;
+
+allow init_shell shell_exec:file execute_no_trans;
+
+#Needed in order to set properties while going in/out of debug mode.
+allow init_shell ctl_default_prop:property_service set;
+
+allow init_shell efs_boot_dev:blk_file r_file_perms;
+
+#perfd
+allow init_shell ctl_default_prop:property_service set;
+
+allow init_shell ctl_rildaemon_prop:property_service set;
+
+#for access to FM property
+allow init_shell fm_prop:property_service set;
+
+#for access to UICC property
+allow init_shell uicc_prop:property_service set;
+
+#for access to logd property
+allow init_shell fuse:dir { write search setattr read create open add_name remove_name };
+allow init_shell fuse:file { write create open append getattr };
+allow init_shell kernel:system { syslog_read syslog_mod };
+
+#for access to tcpdump property
+allow init_shell self:udp_socket { create ioctl };
+allow init_shell self:netlink_socket create_socket_perms;
+allow init_shell self:netlink_route_socket { create_socket_perms nlmsg_read nlmsg_write };
+allow init_shell self:packet_socket create_socket_perms;
